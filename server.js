@@ -3,7 +3,7 @@
 let express = require("express");
 let path = require("path");
 let fs = require("fs");
-let notes = require("../db/db");
+let notes = require("./Develop/db/db");
 let { nanoid } = require("nanoid");
 
 // Sets up the Express App
@@ -14,7 +14,7 @@ var PORT = process.env.PORT || 8080; //should be 8000????
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static('../public')); ///explain
+app.use(express.static('./Develop/public')); ///explain
 
 
 
@@ -26,7 +26,7 @@ app.use(express.static('../public')); ///explain
 // Basic route that sends the user first to the AJAX Page
 app.get("/notes", function(req, res) {
  
-  res.sendFile(path.join(__dirname, "../public/notes.html"));
+  res.sendFile(path.join(__dirname, "./Develop/public/notes.html"));
 });
 
 // Displays notes
@@ -41,7 +41,7 @@ app.post("/api/notes", function(req, res) {
  let newNote = req.body;
  newNote.id = nanoid();
   notes.push(newNote);
-  fs.writeFile("../db/db.json", JSON.stringify(notes), "utf8", function (err) {
+  fs.writeFile("./Develop/db/db.json", JSON.stringify(notes), "utf8", function (err) {
     if (err) {
       throw err;
     }
@@ -59,7 +59,7 @@ app.delete("/api/notes/:id", function (req, res) {
   }).indexOf(noteID);
 
   notes.splice(index, 1);
-  fs.writeFile("./db/db.json", JSON.stringify(notes), "utf8", function (err) {
+  fs.writeFile("./Develop/db/db.json", JSON.stringify(notes), "utf8", function (err) {
     if (err) {
       throw err;
     }
